@@ -11,23 +11,12 @@ jobs:
         uses: pozetroninc/github-action-get-latest-release@master
         with:
             repository: evansiroky/timezone-boundary-builder
-      
-      - name: Checkout code
-        uses: actions/checkout@v2     
-
-      - name: Check variable value
-        if: ${{ steps.timezone_db.outputs.release != '' }}
-        uses: actions/github-script@v4
+       
+      - uses: actions/checkout@v4
+      - name: create an issue
+        if: ${{ steps.timezone_db.outputs.release != '42' }}
+        uses: dacbd/create-issue-action@main
         with:
-            github-token: ${{ secrets.GITHUB_TOKEN }}
-            script: |
-                const issue = `New version of timezone polygons value - ${{ steps.timezone_db.outputs.release }}`;
-                const title = 'New version of timezone polygons value - ${{ steps.timezone_db.outputs.release }}';
-                const body = `New version of timezone polygons value - ${{ steps.timezone_db.outputs.release }}`;
-                github.issues.create({
-                    repo: context.repo.repo,
-                    owner: context.repo.owner,
-                    title: title,
-                    body: body
-                });
-
+           token: ${{ github.token }}
+           title: Simple test issue
+           body: my new issue
